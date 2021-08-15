@@ -27,5 +27,5 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm ci
-    - run: pm2 delete bot
-    - run: pm2 start bot.js
+    - run: chmod +x ./start.sh
+    - run: ./start.sh
