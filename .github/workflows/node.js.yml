@@ -13,6 +13,7 @@ jobs:
   build:
 
     runs-on: self-hosted
+    continue-on-error: true
 
     strategy:
       matrix:
@@ -20,6 +21,7 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - name: Start Prod
-    - run: chmod +x ./start.sh
-    - run: ./start.sh
+    - name: Run the backend
+      run: |
+        chmod +x ./start.sh
+        ./start.sh
