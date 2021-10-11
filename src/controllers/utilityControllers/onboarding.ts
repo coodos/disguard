@@ -33,8 +33,9 @@ const handleOnboarding = async (msg: Discord.Message, args: Object) => {
         "MUTE_MEMBERS",
         "MOVE_MEMBERS",
       ],
-      color: "DARK_ORANGE",
+      color: "RED",
     });
+    await superuserRole.setHoist(true);
     const mutedRole = await msg.member.guild.roles.create({
       name: muted,
       position: rolesCount - 3,

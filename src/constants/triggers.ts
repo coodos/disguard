@@ -1,4 +1,6 @@
 export const ONBOARDING_TRIGGER = "$config";
+export const SUPERUSER_TRIGGER = "$su";
+export const EXIT_TRIGGER = "$exit";
 export const BAN_TRIGGER = "$ban";
 export const MUTE_TRIGGER = "$mute";
 export const KICK_TRIGGER = "$kick";
