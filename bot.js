@@ -1,63 +1,105 @@
-import Discord from 'discord.js';
-import dotenv from 'dotenv';
+const Discord = require('discord.js')
+const client = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES"] })
+const fs = require('fs')
+const mongoose = require('mongoose')
 
-import {
-  superuser,
-  kickUser,
-  banUser,
-  muteUser,
-  unmuteUser,
-  exitSuperuser,
-} from './controllers/adminControllers.js';
+const config = require('./config')
+const prefix = '$';
 
-import { help } from './controllers/documentatinControllers.js';
 
-import { poll } from './controllers/funControllers.js';
+client.commands = new Discord.Collection();
+ 
+const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'));
+for(const file of commandFiles){
+    const command = require(`./commands/${file}`);
+ 
+    client.commands.set(command.name, command);
+}
 
-dotenv.config();
+mongoose
+    .connect(config.dbToken, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+    })
+    .then((m) => {
+        console.log("Connected to Database")
+    })
+    .catch((err) => console.log(err))
 
-const client = new Discord.Client();
 
-client.on('message', async (msg) => {
-  const messageStart = msg.content.split(' ')[0];
+client.once('ready', () => {
+  console.log('Disguard GG is online!');
+});
 
-  switch (messageStart) {
-    case '$su':
-      superuser(msg);
-      return;
-    case '$kick':
-      kickUser(msg);
-      return;
-    case '$ban':
-      banUser(msg);
-      return;
-    case '$mute':
-      muteUser(msg);
-      return;
-    case '$unmute':
-      unmuteUser(msg);
-      return;
-    case '$exit':
-      exitSuperuser(msg);
-      return;
-    case '$help':
-      help(msg);
-      return;
-    case '$poll':
-      poll(msg);
-      return;
+
+
+
+
+
+
+
+client.on('message', message =>{
+  if(!message.content.startsWith(prefix) || message.author.bot) return;
+
+  const args = message.content.slice(prefix.length).split(/ +/);
+  const command = args.shift().toLowerCase();
+
+
+  if(command === 'help'){
+    client.commands.get('helpMe').execute(message, args, Discord)
   }
+
+  if(command === 'fa'){
+    client.commands.get('fact').execute(message, args, Discord)
+  }
+
+  if(command === 'qu'){
+    client.commands.get('quote').execute(message, args, Discord)
+  }
+  if (command === 'user'){
+  client.commands.get('userinfo').execute(message, args, Discord)
+  }
+
+  if (command === 'ban'){
+    client.commands.get('ban').run(client, message, args)
+  }
+
+  if (command === 'purge'){
+    client.commands.get('purge').execute(client, message, args)
+  }
+
+  if (command === 'su'){
+    client.commands.get('su').run(client, message, args)
+  }
+
+
+  const messageStart = message.content.split(' ')[0];
+
+
+    
+
+  const sudoRole = message.guild.roles.cache.find(role => role.name == "sudoer")
+  const superRole = message.guild.roles.cache.find(role => role.name == "superuser")
+  
+  if(!sudoRole) message.guild.roles.create({
+    name: 'sudoer',
+    color: "WHITE"
+    })
+
+  if(!superRole) message.guild.roles.create({
+    name: 'superuser',
+    color: 'RED',
+    permissions : ['BAN_MEMBERS', "KICK_MEMBERS", "CHANGE_NICKNAME", "MANAGE_GUILD", "MANAGE_NICKNAMES", "MANAGE_CHANNELS"]
+    })
+
+
 });
 
-client.on('ready', () => {
-  client.user.setPresence({
-    status: 'online',
-    activity: {
-      name: '$help',
-      type: 'LISTENING',
-    },
-  });
-  console.log(`${client.user.username} is up and running!`);
-});
 
-client.login(process.env.BOT_TOKEN);
+
+
+
+
+
+
+client.login(config.token)
