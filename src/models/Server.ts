@@ -5,6 +5,7 @@ const serverSchema = new mongoose.Schema(
     serverId: {
       type: String,
       required: true,
+      unique: true,
     },
     superuserRole: {
       type: String,

@@ -1,4 +1,5 @@
 import Discord from "discord.js";
+import { Server } from "../../models/Server";
 
 /**
  * Handle the onboarding where the users chooses what to call
@@ -17,11 +18,11 @@ const handleOnboarding = async (msg: Discord.Message, args: Object) => {
   const { superuser, muted, sudoers }: IArgs = args;
   if (isAdmin && sudoers && superuser && muted) {
     const rolesCount = msg.member.guild.roles.cache.size;
-    await msg.member.guild.roles.create({
+    const sudoersRole = await msg.member.guild.roles.create({
       name: sudoers,
       position: rolesCount - 1,
     });
-    await msg.member.guild.roles.create({
+    const superuserRole = await msg.member.guild.roles.create({
       name: superuser,
       position: rolesCount - 2,
       permissions: [
@@ -38,6 +39,24 @@ const handleOnboarding = async (msg: Discord.Message, args: Object) => {
       name: muted,
       position: rolesCount - 3,
     });
+    const serverExists = await Server.findOne({
+      serverId: msg.member.guild.id,
+    });
+    if (serverExists) {
+      serverExists.sudoersRole = sudoersRole.id ?? serverExists.sudoersRole;
+      serverExists.superuserRole =
+        superuserRole.id ?? serverExists.superuserRole;
+      serverExists.mutedRole = mutedRole.id ?? serverExists.mutedRole;
+      await serverExists.save();
+    } else {
+      await Server.create({
+        serverId: msg.member.guild.id,
+        superuserRole: superuserRole.id,
+        sudoersRole: sudoersRole.id,
+        mutedRole: mutedRole.id,
+      });
+    }
+
     msg.member.guild.channels.cache.forEach(async (channel: any) => {
       await channel.permissionOverwrites.edit(mutedRole, {
         SPEAK: false,
@@ -45,6 +64,7 @@ const handleOnboarding = async (msg: Discord.Message, args: Object) => {
         ADD_REACTIONS: false,
       });
     });
+    msg.channel.send("roles created!");
   }
 };
 
