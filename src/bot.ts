@@ -1,6 +1,7 @@
 import Discord, { Intents } from "discord.js";
 import { BOT_TOKEN, MONGO_URI } from "./config";
 import { connectToDB } from "./utils/mongo";
+import HandleMessage from "./controllers";
 
 const main = async () => {
   await connectToDB(MONGO_URI);
@@ -16,7 +17,7 @@ const main = async () => {
   });
 
   client.on("messageCreate", (msg: Discord.Message) => {
-    console.log(msg);
+    HandleMessage(msg);
   });
 
   client.on("ready", () => {
