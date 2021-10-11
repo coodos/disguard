@@ -68,9 +68,15 @@ client.on('message', message =>{
     client.commands.get('purge').execute(client, message, args)
   }
 
+  if (command === 'kick'){
+    client.commands.get('kick').run(client, message, args)
+  }
+
   if (command === 'su'){
     client.commands.get('su').run(client, message, args)
   }
+  
+
 
 
   const messageStart = message.content.split(' ')[0];
