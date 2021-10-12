@@ -5,13 +5,14 @@ import {
   SUPERUSER_TRIGGER,
   EXIT_TRIGGER,
   MUTE_TRIGGER,
+  UNMUTE_TRIGGER,
   MEMBER_INFO_TRIGGER,
   BAN_TRIGGER,
   WARN_TRIGGER,
 } from "../constants/triggers";
 import { handleOnboarding } from "./utilityControllers/onboarding";
 import { root, exitRoot } from "./moderationControllers/su";
-import { muteUser } from "./moderationControllers/mute";
+import { muteUser, unmuteUser } from "./moderationControllers/mute";
 
 /**
  * Handle a message that is sent to the bot and parse it for
@@ -39,6 +40,8 @@ const HandleMessage = async (msg: Discord.Message): Promise<void> => {
         return exitRoot(msg);
       case MUTE_TRIGGER:
         return muteUser(msg, args);
+      case UNMUTE_TRIGGER:
+        return unmuteUser(msg);
     }
   }
 };

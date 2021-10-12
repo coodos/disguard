@@ -31,4 +31,23 @@ const muteUser = async (msg: Discord.Message, args: Object) => {
   }
 };
 
-export { muteUser };
+/**
+ * Unmute the first mention in the message
+ *
+ * @param {Discord.Message} msg
+ */
+
+const unmuteUser = async (msg: Discord.Message) => {
+  if ((await isSudoer(msg)) && msg.guild) {
+    const targetUser = msg.mentions.users.first();
+    if (targetUser) {
+      const server = await Server.findOne({ serverId: msg.guild.id });
+      if (server) {
+        const target = await msg.guild.members.fetch(targetUser.id);
+        await target.roles.remove(server.mutedRole);
+      }
+    }
+  }
+};
+
+export { muteUser, unmuteUser };
