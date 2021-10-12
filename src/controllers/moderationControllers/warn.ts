@@ -1,6 +1,11 @@
 import Discord from "discord.js";
 import { Infraction } from "../../models/Infraction";
-import { isSudoer } from "../../utils/permissions";
+import { isSudoer, isSuperuser } from "../../utils/permissions";
+import {
+  sudoersWarningPopup,
+  notRootError,
+  createEmbed,
+} from "../../utils/embeds";
 
 /**
  * Warn a user and register that as an infraction
@@ -13,22 +18,34 @@ import { isSudoer } from "../../utils/permissions";
 
 const warnUser = async (msg: Discord.Message, args: Object) => {
   if ((await isSudoer(msg)) && msg.guild) {
-    const targetUser = msg.mentions.users.first();
-    interface IArgs {
-      reason?: string;
+    if (await isSuperuser(msg)) {
+      const targetUser = msg.mentions.users.first();
+      interface IArgs {
+        reason?: string;
+      }
+      const { reason }: IArgs = args;
+      const warnReason = reason
+        ? reason
+        : `warning issued by ${msg.author.username}`;
+      if (targetUser) {
+        await Infraction.create({
+          server: msg.guild.id,
+          user: targetUser.id,
+          type: "WARN",
+          reason: warnReason,
+        });
+        createEmbed(
+          "(^▼ｪ▼ﾒ^)",
+          `${targetUser.username} has been issued a warning with the reason\n${warnReason}`,
+          msg.channel,
+          "warn"
+        );
+      }
+    } else {
+      notRootError(msg);
     }
-    const { reason }: IArgs = args;
-    const warnReason = reason
-      ? reason
-      : `warning issued by ${msg.author.username}`;
-    if (targetUser) {
-      await Infraction.create({
-        server: msg.guild.id,
-        user: targetUser.id,
-        type: "WARN",
-        reason: warnReason,
-      });
-    }
+  } else {
+    sudoersWarningPopup(msg);
   }
 };
 

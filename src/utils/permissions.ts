@@ -15,8 +15,8 @@ const isSudoer = async (msg: Discord.Message): Promise<boolean> => {
     serverId: msg.member.guild.id,
   });
   if (!server) return false;
-  const sudoersRoleExists = msg.member.guild.roles.resolveId(
-    server.sudoersRole
+  const sudoersRoleExists = msg.member.roles.cache.find(
+    (role) => role.id === server.sudoersRole
   );
   if (sudoersRoleExists) {
     return true;
@@ -25,4 +25,26 @@ const isSudoer = async (msg: Discord.Message): Promise<boolean> => {
   }
 };
 
-export { isSudoer };
+/**
+ * check if the user is in sudo
+ *
+ * @param {Discord.Message} msg
+ */
+
+const isSuperuser = async (msg: Discord.Message) => {
+  if (!msg.member) return false;
+  const server = await Server.findOne({
+    serverId: msg.member.guild.id,
+  });
+  if (!server) return false;
+  const superuserRole = msg.member.roles.cache.find(
+    (role) => role.id === server.superuserRole
+  );
+  if (superuserRole) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+export { isSudoer, isSuperuser };

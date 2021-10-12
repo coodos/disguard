@@ -13,6 +13,7 @@ import {
 import { handleOnboarding } from "./utilityControllers/onboarding";
 import { root, exitRoot } from "./moderationControllers/su";
 import { muteUser, unmuteUser } from "./moderationControllers/mute";
+import { warnUser } from "./moderationControllers/warn";
 
 /**
  * Handle a message that is sent to the bot and parse it for
@@ -42,6 +43,8 @@ const HandleMessage = async (msg: Discord.Message): Promise<void> => {
         return muteUser(msg, args);
       case UNMUTE_TRIGGER:
         return unmuteUser(msg);
+      case WARN_TRIGGER:
+        return warnUser(msg, args);
     }
   }
 };

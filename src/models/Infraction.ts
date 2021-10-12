@@ -3,8 +3,7 @@ import mongoose from "mongoose";
 const infractionSchema = new mongoose.Schema(
   {
     server: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Server",
+      type: String,
       required: true,
     },
     user: {
@@ -26,7 +25,7 @@ const infractionSchema = new mongoose.Schema(
 );
 
 export interface IInfractionModel extends mongoose.Document {
-  server: mongoose.Schema.Types.ObjectId;
+  server: string;
   user: string;
   type: "MUTE" | "WARN";
   reason: string;

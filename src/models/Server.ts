@@ -19,9 +19,6 @@ const serverSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    infractions: {
-      type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Infraction" }],
-    },
   },
   {
     timestamps: true,
@@ -33,7 +30,6 @@ export interface IServerModel extends mongoose.Document {
   sudoersRole: string;
   mutedRole: string;
   superuserRole: string;
-  infractions: mongoose.Schema.Types.ObjectId[];
 }
 
 const Server = mongoose.model<IServerModel>("Server", serverSchema);

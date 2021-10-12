@@ -16,7 +16,7 @@ const handleOnboarding = async (msg: Discord.Message, args: Object) => {
   }
   const isAdmin = msg.member && msg.member.permissions.has("ADMINISTRATOR");
   const { superuser, muted, sudoers }: IArgs = args;
-  if (isAdmin && sudoers && superuser && muted) {
+  if (isAdmin && sudoers && superuser && muted && msg.guild) {
     const rolesCount = msg.member.guild.roles.cache.size;
     const sudoersRole = await msg.member.guild.roles.create({
       name: sudoers,
@@ -58,12 +58,19 @@ const handleOnboarding = async (msg: Discord.Message, args: Object) => {
       });
     }
 
-    msg.member.guild.channels.cache.forEach(async (channel: any) => {
-      await channel.permissionOverwrites.edit(mutedRole, {
-        SPEAK: false,
-        SEND_MESSAGES: false,
-        ADD_REACTIONS: false,
-      });
+    msg.guild.channels.cache.forEach(async (channel: any) => {
+      try {
+        await channel.permissionOverwrites.edit(mutedRole, {
+          MANAGE_THREADS: false,
+          SEND_MESSAGES: false,
+          SPEAK: false,
+          ADD_REACTIONS: false,
+          CREATE_PUBLIC_THREADS: false,
+          CREATE_PRIVATE_THREADS: false,
+          VIEW_CHANNEL: false,
+          SEND_MESSAGES_IN_THREADS: false,
+        });
+      } catch (error) {}
     });
     msg.channel.send("roles created!");
   }

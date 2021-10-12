@@ -1,6 +1,7 @@
 import { isSudoer } from "../../utils/permissions";
 import { Server } from "../../models/Server";
 import Discord from "discord.js";
+import { sudoersWarningPopup, createEmbed } from "../../utils/embeds";
 
 /**
  * Assign the superuser role to the user :)
@@ -18,12 +19,15 @@ const root = async (msg: Discord.Message) => {
         server.superuserRole
       );
       await msg.member.roles.add(superuserRole);
-      msg.channel.send(`${msg.author.username} is now a superuser`);
+      createEmbed(
+        "(⌐■_■)",
+        `${msg.author.username} is now a superuser`,
+        msg.channel,
+        "success"
+      );
     }
   } else {
-    msg.channel.send(
-      `${msg.author.username} is not in the sudoers file, this incident will be reported`
-    );
+    sudoersWarningPopup(msg);
   }
 };
 
@@ -43,12 +47,10 @@ const exitRoot = async (msg: Discord.Message) => {
         server.superuserRole
       );
       await msg.member.roles.remove(superuserRole);
-      msg.channel.send("all done :)");
+      createEmbed("(◉ܫ◉)", "All done...", msg.channel, "success");
     }
   } else {
-    msg.channel.send(
-      `${msg.author.username} is not in the sudoers file, this incident will be reported`
-    );
+    sudoersWarningPopup(msg);
   }
 };
 
