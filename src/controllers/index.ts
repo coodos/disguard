@@ -13,7 +13,7 @@ import {
 import { handleOnboarding } from "./utilityControllers/onboarding";
 import { root, exitRoot } from "./moderationControllers/su";
 import { muteUser, unmuteUser } from "./moderationControllers/mute";
-import { warnUser } from "./moderationControllers/warn";
+import { warnUser, showUserInfo } from "./moderationControllers/warn";
 
 /**
  * Handle a message that is sent to the bot and parse it for
@@ -45,6 +45,15 @@ const HandleMessage = async (msg: Discord.Message): Promise<void> => {
         return unmuteUser(msg);
       case WARN_TRIGGER:
         return warnUser(msg, args);
+      case MEMBER_INFO_TRIGGER:
+        return showUserInfo(msg);
+      default:
+        msg.channel.send(
+          `${
+            command.split("$")[1]
+          } isn't recognized as an internal or external command`
+        );
+        return;
     }
   }
 };
