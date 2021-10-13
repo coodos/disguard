@@ -7,6 +7,19 @@ import {
   notRootError,
 } from "../../utils/embeds";
 
+const setBiggerTimeout = async (func: Function, time: number) => {
+  let msInHour = 3600 * 1000;
+  let timeCount = 0;
+  let timer = setInterval(function () {
+    timeCount++; // a day has passed
+
+    if (timeCount > time) {
+      func();
+      clearInterval(timer);
+    }
+  }, 3600 * 1000);
+};
+
 /**
  * Mute the user pinged and then unmute them after while
  *
@@ -34,7 +47,7 @@ const muteUser = async (msg: Discord.Message, args: Object) => {
           msg.channel,
           "warn"
         );
-        setTimeout(() => {
+        setBiggerTimeout(() => {
           target.roles.remove(server.mutedRole);
         }, timeout);
       }
