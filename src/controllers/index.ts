@@ -15,7 +15,22 @@ import { handleOnboarding } from "./utilityControllers/onboarding";
 import { root, exitRoot } from "./moderationControllers/su";
 import { muteUser, unmuteUser } from "./moderationControllers/mute";
 import { warnUser, showUserInfo } from "./moderationControllers/warn";
-import { banUser } from "./moderationControllers/removeMember";
+import { banUser, kickUser } from "./moderationControllers/removeMember";
+
+/**
+ * send command not recognized error
+ *
+ * @param {String} command
+ * @param {Discord.Message} msg
+ */
+
+const notRecognisedError = async (command: string, msg: Discord.Message) => {
+  msg.channel.send(
+    `${
+      command.split("$")[1]
+    } isn't recognized as an internal or external command`
+  );
+};
 
 /**
  * Handle a message that is sent to the bot and parse it for
@@ -51,13 +66,10 @@ const HandleMessage = async (msg: Discord.Message): Promise<void> => {
         return showUserInfo(msg);
       case BAN_TRIGGER:
         return banUser(msg, args);
+      case KICK_TRIGGER:
+        return kickUser(msg, args);
       default:
-        msg.channel.send(
-          `${
-            command.split("$")[1]
-          } isn't recognized as an internal or external command`
-        );
-        return;
+        return notRecognisedError(command, msg);
     }
   }
 };

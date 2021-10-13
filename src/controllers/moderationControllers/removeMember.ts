@@ -41,4 +41,38 @@ const banUser = async (msg: Discord.Message, args: Object) => {
   }
 };
 
-export { banUser };
+/**
+ * Kick a user mentioned
+ *
+ * @param {Discord.Message} msg
+ * @param {Object} args
+ */
+
+const kickUser = async (msg: Discord.Message, args: Object) => {
+  if (await isSudoer(msg)) {
+    if (await isSuperuser(msg)) {
+      const targetUser = msg.mentions.users.first();
+      if (targetUser && msg.guild) {
+        interface IKickArgs {
+          reason?: string;
+        }
+        const { reason }: IKickArgs = args;
+        await msg.guild.members.kick(targetUser, reason);
+        createEmbed(
+          "(^▼ｪ▼ﾒ^)",
+          `${targetUser.username} I KEEL YOU!!!!`,
+          msg.channel,
+          "warn"
+        );
+      } else {
+        console.log(targetUser, msg.member);
+      }
+    } else {
+      notRootError(msg);
+    }
+  } else {
+    sudoersWarningPopup(msg);
+  }
+};
+
+export { banUser, kickUser };
