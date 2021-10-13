@@ -14,9 +14,9 @@ To prevent any normal user from accessing root, 'sudo' has a sudoers file where 
 
 ## How to get it?
 You can invite the bot by clicking the link below.
-[Invite the Bot](https://discord.com/api/oauth2/authorize?client_id=851740851100319744&permissions=4228902135&scope=bot)
+[Invite the Bot](https://discord.com/api/oauth2/authorize?client_id=851740851100319744&permissions=8&scope=bot)
 
-Or if it doesn't work, you can copy paste it in your browser: https://discord.com/api/oauth2/authorize?client_id=851740851100319744&permissions=4228902135&scope=bot
+Or if it doesn't work, you can copy paste it in your browser: https://discord.com/api/oauth2/authorize?client_id=851740851100319744&permissions=8&scope=bot
 
 ## Commands List
 |Command|Description|Example|
