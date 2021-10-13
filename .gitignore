@@ -1,1 +1,2 @@
-.env
+config.ts
+node_modules
