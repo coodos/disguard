@@ -7,3 +7,4 @@ export const UNMUTE_TRIGGER = "$unmute";
 export const KICK_TRIGGER = "$kick";
 export const WARN_TRIGGER = "$warn";
 export const MEMBER_INFO_TRIGGER = "$warnings";
+export const HELP_TRIGGER = "$man";
