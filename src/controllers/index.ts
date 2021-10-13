@@ -6,14 +6,16 @@ import {
   EXIT_TRIGGER,
   MUTE_TRIGGER,
   UNMUTE_TRIGGER,
+  WARN_TRIGGER,
   MEMBER_INFO_TRIGGER,
   BAN_TRIGGER,
-  WARN_TRIGGER,
+  KICK_TRIGGER,
 } from "../constants/triggers";
 import { handleOnboarding } from "./utilityControllers/onboarding";
 import { root, exitRoot } from "./moderationControllers/su";
 import { muteUser, unmuteUser } from "./moderationControllers/mute";
 import { warnUser, showUserInfo } from "./moderationControllers/warn";
+import { banUser } from "./moderationControllers/removeMember";
 
 /**
  * Handle a message that is sent to the bot and parse it for
@@ -47,6 +49,8 @@ const HandleMessage = async (msg: Discord.Message): Promise<void> => {
         return warnUser(msg, args);
       case MEMBER_INFO_TRIGGER:
         return showUserInfo(msg);
+      case BAN_TRIGGER:
+        return banUser(msg, args);
       default:
         msg.channel.send(
           `${
