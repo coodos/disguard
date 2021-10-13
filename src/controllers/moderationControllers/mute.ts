@@ -8,16 +8,19 @@ import {
 } from "../../utils/embeds";
 
 const setBiggerTimeout = async (func: Function, time: number) => {
-  let msInHour = 3600 * 1000;
-  let timeCount = 0;
-  let timer = setInterval(function () {
-    timeCount++; // a day has passed
+  if (time > 2000000000) {
+    let timeCount = 0;
+    let timer = setInterval(function () {
+      timeCount++; // a day has passed
 
-    if (timeCount > time) {
-      func();
-      clearInterval(timer);
-    }
-  }, 3600 * 1000);
+      if (timeCount > time) {
+        func();
+        clearInterval(timer);
+      }
+    }, 3600 * 1000);
+  } else {
+    setTimeout(func, time);
+  }
 };
 
 /**
