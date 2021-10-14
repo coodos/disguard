@@ -30,6 +30,12 @@ Or if it doesn't work, you can copy paste it in your browser: https://discord.co
 | `$ban`    | Bans the user pinged                                                                              | `$ban @joe`    |
 | `$mute`   | Mutes the pinged user                                                                             | `$mute @joe`   |
 | `$unmute` | Unmutes the pinged user                                                                           | `$unmute @joe` |
+| `$exit`   | Exits out of the superuser role                                                                   | `$exit`        |
+| `$config` | creates roles for the server                                                                      | `$config`      |
+| `$warn`   | issue a warning to a pinged user                                                                  | `$warn @joe`   |
+| `$warning`| See the history of previous infractions of a user                                                 | `$warning @joe`|
+| `$man`    | To get help related to a specific command type                                                    | `$man ban`     |
+----------------------------------------------------------------------------------------------------------------------------------
 
 ## License
 
