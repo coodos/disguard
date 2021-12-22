@@ -35,6 +35,7 @@ Or if it doesn't work, you can copy paste it in your browser: https://discord.co
 | `$warn`   | issue a warning to a pinged user                                                                  | `$warn @joe`   |
 | `$warning`| See the history of previous infractions of a user                                                 | `$warning @joe`|
 | `$man`    | To get help related to a specific command type                                                    | `$man ban`     |
+| `$purge`    | To purge messages of specified count in given channel                                                    | `$purge --count 69`     |
 ----------------------------------------------------------------------------------------------------------------------------------
 
 ## License
