@@ -1,5 +1,6 @@
 import Discord from "discord.js";
 import { Server } from "../../models/Server";
+import { misusedCommand } from "../../utils/embeds";
 
 /**
  * Handle the onboarding where the users chooses what to call
@@ -73,6 +74,8 @@ const handleOnboarding = async (msg: Discord.Message, args: Object) => {
       } catch (error) {}
     });
     msg.channel.send("roles created!");
+  } else {
+    misusedCommand(msg)
   }
 };
 

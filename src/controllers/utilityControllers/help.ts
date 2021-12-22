@@ -94,6 +94,17 @@ const commands = [
     example: "$warnings @user",
     flags: [],
   },
+  {
+    name: "purge",
+    desc: "purge specified number of messages from channel LESS THAN 100",
+    example: "$purge --number 69",
+    flags: [
+      {
+        name: "--number",
+        value: "[REQUIRED] number of messages to be deleted LESS THAN 100",
+      },
+    ],
+  },
 ];
 
 /**
