@@ -97,10 +97,10 @@ const commands = [
   {
     name: "purge",
     desc: "purge specified number of messages from channel LESS THAN 100",
-    example: "$purge --number 69",
+    example: "$purge --count 69",
     flags: [
       {
-        name: "--number",
+        name: "--count",
         value: "[REQUIRED] number of messages to be deleted LESS THAN 100",
       },
     ],
