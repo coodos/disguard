@@ -11,6 +11,7 @@ import {
   BAN_TRIGGER,
   KICK_TRIGGER,
   HELP_TRIGGER,
+  PURGE_TRIGGER
 } from "../constants/triggers";
 import { handleOnboarding } from "./utilityControllers/onboarding";
 import { root, exitRoot } from "./moderationControllers/su";
@@ -18,6 +19,7 @@ import { muteUser, unmuteUser } from "./moderationControllers/mute";
 import { warnUser, showUserInfo } from "./moderationControllers/warn";
 import { banUser, kickUser } from "./moderationControllers/removeMember";
 import { HandleHelp } from "./utilityControllers/help";
+import { purgeMessages } from "./moderationControllers/purge";
 
 /**
  * send command not recognized error
@@ -72,6 +74,8 @@ const HandleMessage = async (msg: Discord.Message): Promise<void> => {
         return kickUser(msg, args);
       case HELP_TRIGGER:
         return HandleHelp(msg);
+      case PURGE_TRIGGER:
+        return purgeMessages(msg, args)
       default:
         return notRecognisedError(command, msg);
     }

@@ -55,4 +55,14 @@ const notRootError = async (msg: Discord.Message) => {
   msg.channel.send({ embeds: [embed] });
 };
 
-export { createEmbed, sudoersWarningPopup, notRootError };
+const misusedCommand = async (msg: Discord.Message) => {
+  const embed = new Discord.MessageEmbed()
+    .setTitle("( ಠ_ಠ)")
+    .setDescription(
+      "error: you did not use the command correctly, read command's man and try again"
+    )
+    .setColor("RED");
+  msg.channel.send({ embeds: [embed] });
+};
+
+export { createEmbed, sudoersWarningPopup, notRootError, misusedCommand };
